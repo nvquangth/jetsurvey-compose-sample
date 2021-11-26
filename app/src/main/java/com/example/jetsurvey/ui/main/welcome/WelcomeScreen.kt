@@ -1,7 +1,6 @@
 package com.example.jetsurvey.ui.main.welcome
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
@@ -9,7 +8,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,17 +28,29 @@ fun WelcomeScreen(
     onEvent: (WelcomeEvent) -> Unit
 ) {
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Brand()
+    ConstraintLayout {
+        val (brand, formSignIn) = createRefs()
+
+        Brand(modifier = Modifier.constrainAs(brand) {
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+            top.linkTo(parent.top)
+        })
+
         SignInCreateAccount(
             onEvent = onEvent,
             onFocusChange = {
 
             },
             modifier = Modifier
-                .padding(horizontal = 16.dp)
-        )
+                .constrainAs(formSignIn) {
+                    start.linkTo(brand.start)
+                    end.linkTo(brand.end)
+                    top.linkTo(brand.bottom)
+                }
+                .padding(horizontal = 16.dp))
     }
+
 }
 
 @Composable
@@ -59,7 +69,7 @@ fun SignInCreateAccount(
 
         Text(
             text = stringResource(id = R.string.sign_in_create_account),
-            modifier = modifier.constrainAs(titleSignIn) {
+            modifier = Modifier.constrainAs(titleSignIn) {
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 top.linkTo(parent.top)
@@ -77,7 +87,7 @@ fun SignInCreateAccount(
             emailState = emailState,
             imeAction = ImeAction.Done,
             onImeAction = onSubmit,
-            modifier = modifier.constrainAs(email) {
+            modifier = Modifier.constrainAs(email) {
                 start.linkTo(titleSignIn.start)
                 end.linkTo(titleSignIn.end)
                 top.linkTo(titleSignIn.bottom)
@@ -85,7 +95,7 @@ fun SignInCreateAccount(
         )
         Button(
             onClick = onSubmit,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp)
                 .constrainAs(buttonContinue) {
@@ -107,14 +117,14 @@ fun Brand(modifier: Modifier = Modifier) {
     ConstraintLayout(modifier = modifier) {
         val (logo, slogan) = createRefs()
 
-        Logo(modifier = modifier.constrainAs(logo) {
+        Logo(modifier = Modifier.constrainAs(logo) {
             start.linkTo(parent.start)
             end.linkTo(parent.end)
             top.linkTo(parent.top)
         })
 
         Text(text = stringResource(id = R.string.app_tagline),
-            modifier = modifier.constrainAs(slogan) {
+            modifier = Modifier.constrainAs(slogan) {
                 start.linkTo(logo.start)
                 end.linkTo(logo.end)
                 top.linkTo(logo.bottom)
