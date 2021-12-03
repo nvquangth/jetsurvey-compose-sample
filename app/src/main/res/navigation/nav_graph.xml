@@ -11,4 +11,8 @@
     <fragment
         android:id="@+id/sign_in_fragment"
         android:name="com.example.jetsurvey.ui.main.signin.SignInFragment" />
+
+    <fragment
+        android:id="@+id/survey_fragment"
+        android:name="com.example.jetsurvey.ui.main.survey.SurveyFragment" />
 </navigation>
